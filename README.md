@@ -1,6 +1,7 @@
 
 # EduExcellence School Management System
-**Redis @Cacheable: Student GET 85ms DB → 2ms Redis | Spring Boot 3 + Java 21**
+**Redis @Cacheable: Student GET 85ms DB → 2ms Redis | Spring Boot 2.6.6 + Java 17**
+
 
 A high-performance School Management platform developed using Java and Spring Boot. 
 The system leverages a microservice-ready architecture with a focus on speed and data reliability.
@@ -8,7 +9,7 @@ The system leverages a microservice-ready architecture with a focus on speed and
 ## 🚀 Key Features & Tech Stack
 | Layer | Technology |
 | --- | --- |
-| **Backend** | Java 21, Spring Boot 3, Spring Web, Spring Data JPA |
+| **Backend** | Backend Java 17, Spring Boot 2.6.6, Spring Web, Spring Data JPA
 | **Cache** | Redis with Jackson JSON serialization + `@Cacheable` |
 | **Database** | H2 in-memory for dev/testing |
 | **Operations** | Full CRUD for Student management |
