@@ -1,15 +1,14 @@
-
 # spring-redis-performance
-**Redis Cache-aside: Student GET 85ms DB → 2ms Redis | Java 21 + Spring Boot 3**
+**Redis Cache-aside: Student GET 85ms DB → 2ms Redis | Java 17 + Spring Boot 2.6.6**
 
 Backend service proving Redis caching with measurable performance gains.
 
 ## 🚀 Tech Stack
 | Layer | Technology |
 | --- | --- |
-| **Backend** | Java 21, Spring Boot 3.x, Spring Web, Spring Data JPA |
+| **Backend** | Java 17, Spring Boot 2.6.6, Spring Web, Spring Data JPA |
 | **Cache** | Redis with Jackson JSON + `@Cacheable` |
-| **Database** | PostgreSQL for dev/prod |
+| **Database** | H2 in-memory for dev/testing |
 | **Ops** | Docker Compose, Timing logs |
 
 ## ⚡ Performance Proof
@@ -33,5 +32,3 @@ bash
 docker compose up -d
 mvn spring-boot:run
 App: http://localhost:8080
-
-This repo proves Redis cache-aside pattern + performance benchmarking for backend roles.
