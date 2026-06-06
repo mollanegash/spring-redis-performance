@@ -27,17 +27,20 @@ public class StudentService {
     @Cacheable(value = "student-cache", key = "#id")// CRITICAL: Redis Caching
     @Transactional(readOnly = true)
     public Student getstudentById(Long id) {
-        return studentRepository.findById(id).orElse(null);
+        long start = System.currentTimeMillis();
+        Student student = studentRepository.findById(id).orElse(null);
+        System.out.println("DB hit for ID " + id + ": " + (System.currentTimeMillis() - start) + "ms"); // ADD THIS
+    return student;
     }
 
     @Transactional // CRITICAL: Atomic Transaction management
-    @CacheEvict(value = "students", key = "#student.id", allEntries = true)
+    @CacheEvict(value = "students-cache", key = "#student.id")
     public Student saveOrUpdateStudent(Student student) {
         return studentRepository.save(student);
     }
 
     @Transactional
-    @CacheEvict(value = "students", key = "#id")
+    @CacheEvict(value = "students-cache", key = "#id")
     public void deleteById(Long id) {
         studentRepository.deleteById(id);
     }
