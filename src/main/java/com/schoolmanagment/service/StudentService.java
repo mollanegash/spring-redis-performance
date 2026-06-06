@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 @Transactional // Ensures data integrity
@@ -29,7 +31,7 @@ public class StudentService {
     public Student getstudentById(Long id) {
         long start = System.currentTimeMillis();
         Student student = studentRepository.findById(id).orElse(null);
-        System.out.println("DB hit for ID " + id + ": " + (System.currentTimeMillis() - start) + "ms"); // ADD THIS
+        log.debug("DB hit for ID {}: {}ms", id, System.currentTimeMillis() - start);
     return student;
     }
 
