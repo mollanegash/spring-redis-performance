@@ -1,49 +1,75 @@
 package com.schoolmanagment.service;
 
-import com.schoolmanagment.model.Student;
-import com.schoolmanagment.repo.StuRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.schoolmanagment.model.Student;
+import com.schoolmanagment.repo.StuRepository;
+
+
 
 @Service
-@Transactional // Ensures data integrity
 public class StudentService {
 
+
     @Autowired
-    private StuRepository studentRepository;
+    private StuRepository repository;
 
-    @Transactional(readOnly = true)
-    public List<Student> getAllStudents() {
-        List<Student> students = new ArrayList<>();
-        studentRepository.findAll().forEach(students::add);
-        return students;
-    }
-    @Cacheable(value = "student-cache", key = "#id")// CRITICAL: Redis Caching
-    @Transactional(readOnly = true)
-    public Student getstudentById(Long id) {
-        long start = System.currentTimeMillis();
-        Student student = studentRepository.findById(id).orElse(null);
-        log.debug("DB hit for ID {}: {}ms", id, System.currentTimeMillis() - start);
-    return student;
+
+
+    @Cacheable(value="students")
+    public List<Student> getAllStudents(){
+
+        System.out.println("Fetching students from database");
+
+        return repository.findAll();
+
     }
 
-    @Transactional // CRITICAL: Atomic Transaction management
-    @CacheEvict(value = "students-cache", key = "#student.id")
-    public Student saveOrUpdateStudent(Student student) {
-        return studentRepository.save(student);
+
+
+    @Cacheable(value="students", key="#id")
+    public Student getStudentById(Long id){
+
+        System.out.println("Fetching student from database");
+
+        return repository.findById(id)
+                .orElse(null);
+
     }
 
-    @Transactional
-    @CacheEvict(value = "students-cache", key = "#id")
-    public void deleteById(Long id) {
-        studentRepository.deleteById(id);
+
+
+    @CacheEvict(value="students", allEntries=true)
+    public Student saveStudent(Student student){
+
+        System.out.println("Saving student");
+
+        return repository.save(student);
+
     }
+
+
+
+    @CacheEvict(value="students", allEntries=true)
+    public void deleteStudent(Long id){
+
+        repository.deleteById(id);
+
+    }
+
+
+
+    @CacheEvict(value="students", allEntries=true)
+    public Student updateStudent(Student student){
+
+        return repository.save(student);
+
+    }
+
 }

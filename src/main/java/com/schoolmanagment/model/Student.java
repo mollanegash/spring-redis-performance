@@ -5,90 +5,95 @@ import java.io.Serializable;
 
 
 @Entity
-@Table(name = "students")
-
+@Table(name="students")
 public class Student implements Serializable {
-    private static final long serialVersionUID = 1L; // Recommended
+
+    private static final long serialVersionUID = 1L;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Change from Integer/int to Long
+    private Long id;
 
-    @Version // CRITICAL: Handles Concurrency (Optimistic Locking)
+
+    @Version
     private Integer version;
 
-    @Column(name = "student_name")
+
+    @Column(name="student_name")
     private String studentName;
 
-    @Column(unique = true)
+
+    @Column(unique=true)
     private String email;
 
+
     private String regDate;
+
+
     private String courseName;
 
-    public Student() {
-        // Required by Hibernate
-    }
+
+
+    public Student(){}
+
 
     public Long getId() {
         return id;
     }
 
+
     public void setId(Long id) {
-        this.id = id;
+        this.id=id;
     }
 
-    public Integer getVersion() {
+
+    public Integer getVersion(){
         return version;
     }
 
-    public void setVersion(Integer version) {
-        this.version = version;
+
+    public void setVersion(Integer version){
+        this.version=version;
     }
 
-    public String getStudentName() {
+
+    public String getStudentName(){
         return studentName;
     }
 
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+
+    public void setStudentName(String studentName){
+        this.studentName=studentName;
     }
 
-    public String getEmail() {
+
+    public String getEmail(){
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+
+    public void setEmail(String email){
+        this.email=email;
     }
 
-    public String getRegDate() {
+
+    public String getRegDate(){
         return regDate;
     }
 
-    public void setRegDate(String regDate) {
-        this.regDate = regDate;
+
+    public void setRegDate(String regDate){
+        this.regDate=regDate;
     }
 
-    public String getCourseName() {
+
+    public String getCourseName(){
         return courseName;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
-    }
 
-    public Student(Long id, Integer version, String studentName, String email, String regDate, String courseName) {
-        this.id = id;
-        this.version = version;
-        this.studentName = studentName;
-        this.email = email;
-        this.regDate = regDate;
-        this.courseName = courseName;
-    }
-
-    @Override
-    public String toString() {
-        return "Student [name=" + studentName + ", id=" + id + ", email=" + email + "]";
+    public void setCourseName(String courseName){
+        this.courseName=courseName;
     }
 }

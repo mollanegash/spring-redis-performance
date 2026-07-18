@@ -1,107 +1,95 @@
 package com.schoolmanagment.controller;
 
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
+
 
 import com.schoolmanagment.model.Student;
-import com.schoolmanagment.repo.StuRepository;
 import com.schoolmanagment.service.StudentService;
 
-/*The design is complete, and it's time to implement. Using Java, Spring Boot, Spring Web, Spring
-Data JPA, and H2(in-memory database), implement a microservice(studentms) to manage
-students with all CRUD operations.
-1. An API to fetch all students
-2. An API to fetch a single student
-3. An API to create a new student
-4. An API to delete a student
-5. An API to update a student
-Hint: Service registry/discovery, load balancing, circuit breaker.*/
+
+
 @RestController
-@RequestMapping("/student") // This handles the "/student" part
+@RequestMapping("/student")
 public class StudentController {
-	@Autowired
-	StudentService studentService;
-	StuRepository strepo;
-
-	@GetMapping("/students")
-	// An API to fetch all students
-	private List<Student> getAllStudents() {
-		return studentService.getAllStudents();
-
-	}
-		/*link
-	@GetMapping("/students")
-	private List<Student> allSudents() {
-	  return (List<Student>) strepo.findAll();
-	}
 
 
-	@GetMapping("/employees")
-	CollectionModel<EntityModel<Student>> allStudents() {
 
-	  List<EntityModel<Student>> students = strepo.findAll().streams();
-	      .map(employee -> EntityModel.of(employee,
-	          linkTo(methodOn(EmployeeController.class).one(employee.getId())).withSelfRel(),
-	          linkTo(methodOn(EmployeeController.class).all()).withRel("employees")))
-	      .collect(Collectors.toList());
-
-	  return CollectionModel.of(students, linkTo(methodOn(EmployeeController.class).all()).withSelfRel());
-	}*/
-	
-	@GetMapping("/{id}")
-	// An API to fetch a single student
-	private Student getStudent(@PathVariable("id") Long id) {
-		// Student st =strepo.findAll()
-
-		return studentService.getstudentById(id);
-		// return strepo.findById(id).orElseThrow(()-> new
-		// StudentNotFoundException(id));
-
-	}
-
-	/*
-	 * Introducing Spring HATEOAS, a Spring project aimed at helping you write
-	 * hypermedia-driven outputs. To upgrade your service to being RESTful,add this
-	 * to your build:
-	 
-	@GetMapping("/students/{id}")
-	private EntityModel<Student> getOne(@PathVariable int id) {
-
-		Student student = strepo.findById(id) //
-				.orElseThrow()->new StudentNotFoundException(id);
-
-		return EntityModel.of(employee, //
-				linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel(),
-				linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
-	}*/
+    @Autowired
+    private StudentService service;
 
 
-	@PostMapping("/students")
-	// An API to create a new student
-	private void addStudentById(@RequestBody Student student) {
-		studentService.saveOrUpdateStudent(student);
 
-	}
-	//An API to delete a student
+    //GET ALL
 
-	@DeleteMapping("students/{id}")
-	private void deleteStudenet(@PathVariable("id") Long id) {
-		studentService.deleteById(id);
+    @GetMapping("/students")
+    public List<Student> getStudents(){
 
-	}
-	
-	//An API to update a student
+        return service.getAllStudents();
 
-	@PutMapping("/students/{id}")
-	private Student putData(@RequestBody Student newStudent,@PathVariable("id")Long id) {
-		return studentService.saveOrUpdateStudent(newStudent);
-		
-		
-	}
+    }
+
+
+
+    //GET ONE
+
+    @GetMapping("/students/{id}")
+    public Student getStudent(
+            @PathVariable Long id){
+
+        return service.getStudentById(id);
+
+    }
+
+
+
+
+    //CREATE
+
+    @PostMapping("/students")
+    public Student createStudent(
+            @RequestBody Student student){
+
+
+        return service.saveStudent(student);
+
+    }
+
+
+
+
+    //UPDATE
+
+    @PutMapping("/students/{id}")
+    public Student updateStudent(
+            @PathVariable Long id,
+            @RequestBody Student student){
+
+
+        student.setId(id);
+
+        return service.updateStudent(student);
+
+    }
+
+
+
+
+    //DELETE
+
+    @DeleteMapping("/students/{id}")
+    public String deleteStudent(
+            @PathVariable Long id){
+
+        service.deleteStudent(id);
+
+        return "Deleted successfully";
+
+    }
+
+
 }
